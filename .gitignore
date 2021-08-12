@@ -42,3 +42,7 @@ output/
 
 # R environment settings file
 .Renviron
+.Rproj.user
+.Rhistory
+.RData
+output/
