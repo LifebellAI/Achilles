@@ -1,11 +1,18 @@
 # A Docker container to run the OHDSI/Achilles analysis tool
-FROM ubuntu:trusty
+FROM ubuntu:bionic
 
-MAINTAINER Aaron Browne <brownea@email.chop.edu>
+# Install OpenJDK-8
+RUN apt-get update && \
+    apt-get install -y openjdk-8-jdk && \
+    apt-get install -y ant && \
+    apt-get install -y gnupg && \
+    apt-get -y install locales && \
+    apt-get clean;
 
-# Install java, R and required packages and clean up.
-RUN echo deb http://ppa.launchpad.net/marutter/rrutter/ubuntu trusty main >> /etc/apt/sources.list && \
-    echo deb http://ppa.launchpad.net/marutter/c2d4u/ubuntu trusty main >> /etc/apt/sources.list && \
+
+# Install  R and required packages and clean up.
+RUN echo deb http://ppa.launchpad.net/marutter/rrutter/ubuntu bionic main >> /etc/apt/sources.list && \
+    echo deb http://ppa.launchpad.net/marutter/c2d4u/ubuntu bionic main >> /etc/apt/sources.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C9A7585B49D51698710F3A115E25F516B04C661B && \
     sed 's#http://.*archive\.ubuntu\.com/ubuntu/#mirror://mirrors.ubuntu.com/mirrors.txt#g' -i /etc/apt/sources.list && \
     apt-get update && \
@@ -17,11 +24,9 @@ RUN echo deb http://ppa.launchpad.net/marutter/rrutter/ubuntu trusty main >> /et
       r-cran-stringr \
       r-cran-rjava \
       r-cran-dbi \
-      r-cran-ffbase \
       r-cran-urltools \
       libxml2-dev \
       littler \
-      openjdk-7-jdk \
     && rm -rf /var/lib/apt/lists/* \
     && R CMD javareconf
 
@@ -43,7 +48,7 @@ RUN R -e "install.packages( \
 ) "
 
 # Install Achilles requirements that need to be installed from source
-RUN echo 'options(repos=structure(c(CRAN="http://cran.cnr.berkeley.edu/")))' > /root/.Rprofile && \
+RUN echo 'options(repos=structure(c(CRAN="http://cran.r-project.org/")))' > /root/.Rprofile && \
     /usr/share/doc/littler/examples/install.r remotes && \
     /usr/share/doc/littler/examples/install.r docopt && \
     /usr/share/doc/littler/examples/install.r openxlsx && \
@@ -54,12 +59,16 @@ RUN echo 'options(repos=structure(c(CRAN="http://cran.cnr.berkeley.edu/")))' > /
     /usr/share/doc/littler/examples/install.r R.utils && \
     /usr/share/doc/littler/examples/install.r snow && \
     /usr/share/doc/littler/examples/install.r mailR && \
+    /usr/share/doc/littler/examples/install.r ParallelLogger && \
+    /usr/share/doc/littler/examples/install.r ffbase && \
+    /usr/share/doc/littler/examples/install.r dplyr && \
     /usr/share/doc/littler/examples/installGithub.r \
       OHDSI/SqlRender \
       OHDSI/DatabaseConnectorJars \
       OHDSI/DatabaseConnector \
-      OHDSI/OhdsiRTools \
     && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
+
+RUN /usr/share/doc/littler/examples/installGithub.r ohdsi/OhdsiRTools
 
 # Configure workspace
 WORKDIR /opt/app
