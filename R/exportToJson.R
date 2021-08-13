@@ -127,6 +127,7 @@ exportToJson <- function(connectionDetails,
   # connect to the results schema
   connectionDetails$schema <- resultsDatabaseSchema
   conn <- DatabaseConnector::connect(connectionDetails)
+  print(conn@jConnection)
 
   # generate reports
 
@@ -232,12 +233,6 @@ exportToJson <- function(connectionDetails,
   }
 
   if (("MEASUREMENT" %in% reports)) {
-    generateMeasurementTreemap(conn,
-                               connectionDetails$dbms,
-                               cdmDatabaseSchema,
-                               resultsDatabaseSchema,
-                               outputPath,
-                               vocabDatabaseSchema)
     generateMeasurementReports(conn,
                                connectionDetails$dbms,
                                cdmDatabaseSchema,
@@ -2398,6 +2393,9 @@ generateMeasurementTreemap <- function(conn,
                                                                cdm_database_schema = cdmDatabaseSchema,
                                                                results_database_schema = resultsDatabaseSchema,
                                                                vocab_database_schema = vocabDatabaseSchema)
+
+  cat(queryMeasurementTreemap)
+
 
   dataMeasurementTreemap <- DatabaseConnector::querySql(conn, queryMeasurementTreemap)
 

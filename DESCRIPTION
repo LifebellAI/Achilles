@@ -27,15 +27,15 @@ Imports:
     jsonlite,
     ParallelLogger,
     readr,
-    shiny,
-    Castor
+    shiny
 Suggests:
   R.utils,
   DT,
   magrittr,
   tidyr,
   knitr, 
-  rmarkdown
+  rmarkdown,
+  Castor
 Remotes:
   OHDSI/Castor
 VignetteBuilder: knitr

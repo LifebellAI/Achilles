@@ -62,6 +62,8 @@ RUN echo 'options(repos=structure(c(CRAN="http://cran.r-project.org/")))' > /roo
     /usr/share/doc/littler/examples/install.r ParallelLogger && \
     /usr/share/doc/littler/examples/install.r ffbase && \
     /usr/share/doc/littler/examples/install.r dplyr && \
+    /usr/share/doc/littler/examples/install.r readr && \
+    /usr/share/doc/littler/examples/install.r shiny && \
     /usr/share/doc/littler/examples/installGithub.r \
       OHDSI/SqlRender \
       OHDSI/DatabaseConnectorJars \
