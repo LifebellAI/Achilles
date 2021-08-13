@@ -42,6 +42,36 @@ connectionDetails <- createConnectionDetails(
     port="5432"
 )
 
+args <- commandArgs(trailingOnly = TRUE)
+
+createIndices <- (db_conf$scheme != "redshift" && db_conf$scheme != "netezza")
+
+if (length(args) == 0 || args[1] != "heel") {
+
+    # Run Achilles report and generate data in the results schema.
+    achillesResults <- achilles(
+        connectionDetails, cdmDatabaseSchema="omop",
+        resultsDatabaseSchema="achilles_results",
+        vocabDatabaseSchema="omop",
+        scratchDatabaseSchema = "achilles_results",
+        sourceName="mimiciv",
+        cdmVersion="5.3",
+        createIndices=TRUE,
+        createTable=TRUE
+    )
+    
+} else {
+
+    # Run Achilles Heel only
+    achillesHeel(
+	      connectionDetails,
+	      cdmDatabaseSchema=env_vars$ACHILLES_CDM_SCHEMA,
+        resultsDatabaseSchema=env_vars$ACHILLES_RES_SCHEMA,
+        vocabDatabaseSchema=env_vars$ACHILLES_VOCAB_SCHEMA,
+        cdmVersion=env_vars$ACHILLES_CDM_VERSION)
+
+}
+
 # Export Achilles results to output path in JSON format.
 exportToJson(connectionDetails=connectionDetails,
 cdmDatabaseSchema="omop", 
