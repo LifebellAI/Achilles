@@ -37,10 +37,12 @@ connectionDetails <- createConnectionDetails(
     dbms="postgresql",
     user="postgres",
     password="KglQkgAEmfISxXRY5CYL",
-    extraSettings="CommandTimeout=0;Keepalive=6000;",
     server="lifebell-mimiciv.c8hzbtpbj5kk.us-east-2.rds.amazonaws.com/mimiciv", 
     port="5432"
 )
+
+cat("DATABASE CONNECTEDDDDDDDD!!!!!! WOOT WOOT!!!!!!!!!!")
+print(connectionDetails)
 
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -73,8 +75,12 @@ if (length(args) == 0 || args[1] != "heel") {
 }
 
 # Export Achilles results to output path in JSON format.
+<<<<<<< HEAD
 exportToJson(connectionDetails=connectionDetails,
 cdmDatabaseSchema="omop", 
 resultsDatabaseSchema="achilles_results", 
 outputPath="/opt/app/output"
 )
+=======
+exportToJson(connectionDetails,"omop", "achilles_results", "C:\Users\achav\Repos\AchillesWeb\AchillesWeb\data")
+>>>>>>> 07b4ef94c17223215ff9b61e50089e71c98f196c

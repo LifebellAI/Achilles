@@ -3,4 +3,4 @@ achilles:
     env_file:
         - env_vars
     volumes:
-        - ../AchillesWeb/AchillesWeb/data/MIMICIV-OMOP/:/opt/app/output:rw
+        - C:\Users\achav\Repos\Achilles:/opt/app/output:rw
